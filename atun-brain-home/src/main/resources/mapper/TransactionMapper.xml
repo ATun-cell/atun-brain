@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atun.brain.infrastructure.persistence.mybatis.mapper.TransactionMapper">
+    
+    <resultMap id="BaseResultMap" type="com.atun.brain.entity.Transaction">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="message_id" property="messageId"/>
+        <result column="amount" property="amount"/>
+        <result column="type" property="type"/>
+        <result column="category_id" property="categoryId"/>
+        <result column="transaction_date" property="transactionDate"/>
+        <result column="description" property="description"/>
+        <result column="tags" property="tags"/>
+        <result column="created_at" property="createdAt"/>
+    </resultMap>
+    
+    <resultMap id="TransactionWithCategoryMap" type="com.atun.brain.entity.Transaction"
+        extends="BaseResultMap">
+        <association property="category" javaType="com.atun.brain.entity.Category">
+            <id column="cat_id" property="id"/>
+            <result column="cat_name" property="name"/>
+            <result column="cat_type" property="type"/>
+        </association>
+    </resultMap>
+    
+    <select id="findById" resultMap="BaseResultMap">
+        SELECT * FROM transaction WHERE id = #{id}
+    </select>
+    
+    <select id="findByUserId" resultMap="BaseResultMap">
+        SELECT * FROM transaction
+        WHERE user_id = #{userId}
+        ORDER BY transaction_date DESC, created_at DESC
+    </select>
+    
+    <select id="findByUserIdAndDateRange" resultMap="BaseResultMap">
+        SELECT * FROM transaction
+        WHERE user_id = #{userId}
+          AND transaction_date BETWEEN #{startDate} AND #{endDate}
+        ORDER BY transaction_date DESC, created_at DESC
+    </select>
+    
+    <select id="findByUserIdAndCategoryId" resultMap="BaseResultMap">
+        SELECT * FROM transaction
+        WHERE user_id = #{userId} AND category_id = #{categoryId}
+        ORDER BY transaction_date DESC, created_at DESC
+    </select>
+    
+    <select id="findByUserIdWithCategory" resultMap="TransactionWithCategoryMap">
+        SELECT
+        t.*,
+        c.id as cat_id,
+        c.name as cat_name,
+        c.type as cat_type
+        FROM transaction t
+        LEFT JOIN category c ON t.category_id = c.id
+        WHERE t.user_id = #{userId}
+        <if test="startDate != null and endDate != null">
+            AND t.transaction_date BETWEEN #{startDate} AND #{endDate}
+        </if>
+        ORDER BY t.transaction_date DESC, t.created_at DESC
+    </select>
+    
+    <insert id="insert" parameterType="com.atun.brain.entity.Transaction"
+        useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO transaction
+        (user_id, message_id, amount, type, category_id,
+         transaction_date, description, tags)
+        VALUES
+            (#{userId}, #{messageId}, #{amount}, #{type}, #{categoryId},
+             #{transactionDate}, #{description}, #{tags})
+    </insert>
+    
+    <update id="update" parameterType="com.atun.brain.entity.Transaction">
+        UPDATE transaction
+        SET amount = #{amount},
+            type = #{type},
+            category_id = #{categoryId},
+            transaction_date = #{transactionDate},
+            description = #{description},
+            tags = #{tags}
+        WHERE id = #{id}
+    </update>
+    
+    <delete id="deleteById">
+        DELETE FROM transaction WHERE id = #{id}
+    </delete>
+</mapper>

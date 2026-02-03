@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atun.brain.infrastructure.persistence.mybatis.mapper.UserMapper">
+    
+    <resultMap id="BaseResultMap" type="com.atun.brain.entity.User">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="email" property="email"/>
+        <result column="password_hash" property="passwordHash"/>
+        <result column="preferences" property="preferences"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
+    </resultMap>
+    
+    <select id="findById" resultMap="BaseResultMap">
+        SELECT * FROM user WHERE id = #{id}
+    </select>
+    
+    <select id="findByUsername" resultMap="BaseResultMap">
+        SELECT * FROM user WHERE username = #{username}
+    </select>
+    
+    <select id="findByEmail" resultMap="BaseResultMap">
+        SELECT * FROM user WHERE email = #{email}
+    </select>
+    
+    <insert id="insert" parameterType="com.atun.brain.entity.User"
+        useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO user (username, email, password_hash, preferences)
+        VALUES (#{username}, #{email}, #{passwordHash}, #{preferences})
+    </insert>
+    
+    <update id="update" parameterType="com.atun.brain.entity.User">
+        UPDATE user
+        SET username = #{username},
+            email = #{email},
+            preferences = #{preferences}
+        WHERE id = #{id}
+    </update>
+    
+    <delete id="deleteById">
+        DELETE FROM user WHERE id = #{id}
+    </delete>
+</mapper>
