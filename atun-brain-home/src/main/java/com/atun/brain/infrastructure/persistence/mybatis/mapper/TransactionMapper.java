@@ -1,6 +1,6 @@
 package com.atun.brain.infrastructure.persistence.mybatis.mapper;
 
-import com.atun.brain.entity.Transaction;
+import com.atun.brain.infrastructure.persistence.mybatis.po.TransactionPO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

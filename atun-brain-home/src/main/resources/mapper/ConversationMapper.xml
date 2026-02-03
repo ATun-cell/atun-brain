@@ -3,13 +3,16 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.atun.brain.infrastructure.persistence.mybatis.mapper.ConversationMapper">
     
-    <resultMap id="BaseResultMap" type="com.atun.brain.entity.Conversation">
+    <resultMap id="BaseResultMap" type="com.atun.brain.infrastructure.persistence.mybatis.po.ConversationPO">
         <id column="id" property="id"/>
         <result column="user_id" property="userId"/>
         <result column="session_id" property="sessionId"/>
         <result column="agent_type" property="agentType"/>
-        <result column="created_at" property="createdAt"/>
         <result column="last_active_at" property="lastActiveAt"/>
+        <result column="archived" property="archived"/>
+        <result column="title" property="title"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
     </resultMap>
     
     <select id="findById" resultMap="BaseResultMap">
@@ -32,22 +35,30 @@
         ORDER BY last_active_at DESC
     </select>
     
-    <insert id="insert" parameterType="com.atun.brain.entity.Conversation"
+    <insert id="insert" parameterType="com.atun.brain.infrastructure.persistence.mybatis.po.ConversationPO"
         useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO conversation (user_id, session_id, agent_type)
-        VALUES (#{userId}, #{sessionId}, #{agentType})
+        INSERT INTO conversation (user_id, session_id, agent_type, last_active_at, archived, title, created_at, updated_at)
+        VALUES (#{userId}, #{sessionId}, #{agentType}, #{lastActiveAt}, #{archived}, #{title}, NOW(), NOW())
     </insert>
     
-    <update id="update" parameterType="com.atun.brain.entity.Conversation">
+    <update id="update" parameterType="com.atun.brain.infrastructure.persistence.mybatis.po.ConversationPO">
         UPDATE conversation
         SET agent_type = #{agentType},
-            last_active_at = #{lastActiveAt}
+            last_active_at = #{lastActiveAt},
+            archived = #{archived},
+            title = #{title},
+            updated_at = NOW()
         WHERE id = #{id}
     </update>
     
     <update id="updateLastActiveAt">
         UPDATE conversation
-        SET last_active_at = NOW()
+        SET last_active_at = NOW(),
+            updated_at = NOW()
         WHERE id = #{id}
     </update>
+    
+    <delete id="deleteById">
+        DELETE FROM conversation WHERE id = #{id}
+    </delete>
 </mapper>

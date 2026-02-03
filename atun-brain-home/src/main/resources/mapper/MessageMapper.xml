@@ -3,14 +3,16 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.atun.brain.infrastructure.persistence.mybatis.mapper.MessageMapper">
     
-    <resultMap id="BaseResultMap" type="com.atun.brain.entity.Message">
+    <resultMap id="BaseResultMap" type="com.atun.brain.infrastructure.persistence.mybatis.po.MessagePO">
         <id column="id" property="id"/>
         <result column="conversation_id" property="conversationId"/>
         <result column="role" property="role"/>
         <result column="content" property="content"/>
         <result column="metadata" property="metadata"/>
         <result column="vector_id" property="vectorId"/>
+        <result column="timestamp" property="timestamp"/>
         <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
     </resultMap>
     
     <select id="findById" resultMap="BaseResultMap">
@@ -20,20 +22,20 @@
     <select id="findByConversationId" resultMap="BaseResultMap">
         SELECT * FROM message
         WHERE conversation_id = #{conversationId}
-        ORDER BY created_at ASC
+        ORDER BY timestamp ASC
     </select>
     
     <select id="findByConversationIdWithLimit" resultMap="BaseResultMap">
         SELECT * FROM message
         WHERE conversation_id = #{conversationId}
-        ORDER BY created_at DESC
-            LIMIT #{limit}
+        ORDER BY timestamp DESC
+        LIMIT #{limit}
     </select>
     
-    <insert id="insert" parameterType="com.atun.brain.entity.Message"
+    <insert id="insert" parameterType="com.atun.brain.infrastructure.persistence.mybatis.po.MessagePO"
         useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO message (conversation_id, role, content, metadata, vector_id)
-        VALUES (#{conversationId}, #{role}, #{content}, #{metadata}, #{vectorId})
+        INSERT INTO message (conversation_id, role, content, metadata, vector_id, timestamp, created_at, updated_at)
+        VALUES (#{conversationId}, #{role}, #{content}, #{metadata}, #{vectorId}, #{timestamp}, NOW(), NOW())
     </insert>
     
     <delete id="deleteByConversationId">

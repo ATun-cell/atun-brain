@@ -1,6 +1,6 @@
 package com.atun.brain.infrastructure.persistence.mybatis.mapper;
 
-import com.atun.brain.entity.Category;
+import com.atun.brain.infrastructure.persistence.mybatis.po.CategoryPO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -9,17 +9,17 @@ import java.util.List;
 @Mapper
 public interface CategoryMapper {
     
-    Category findById(@Param("id") Long id);
+    CategoryPO findById(@Param("id") Long id);
     
-    Category findByName(@Param("name") String name);
+    CategoryPO findByName(@Param("name") String name);
     
-    List<Category> findAll();
+    List<CategoryPO> findAll();
     
-    List<Category> findByType(@Param("type") String type);
+    List<CategoryPO> findByType(@Param("type") String type);
     
-    List<Category> findByParentId(@Param("parentId") Long parentId);
+    List<CategoryPO> findByParentId(@Param("parentId") Long parentId);
     
-    int insert(Category category);
+    int insert(CategoryPO category);
     
-    int update(Category category);
+    int update(CategoryPO category);
 }
