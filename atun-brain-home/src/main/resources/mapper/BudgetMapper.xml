@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atun.brain.infrastructure.persistence.mybatis.mapper.BudgetMapper">
+    
+    <resultMap id="BaseResultMap" type="com.atun.brain.infrastructure.persistence.mybatis.po.BudgetPO">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="category_id" property="categoryId"/>
+        <result column="amount" property="amount"/>
+        <result column="period" property="periodType"/>
+        <result column="year" property="year"/>
+        <result column="month" property="month"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
+    </resultMap>
+    
+    <select id="findById" resultMap="BaseResultMap">
+        SELECT * FROM budget WHERE id = #{id}
+    </select>
+    
+    <select id="findByUserId" resultMap="BaseResultMap">
+        SELECT * FROM budget
+        WHERE user_id = #{userId}
+        ORDER BY created_at DESC
+    </select>
+    
+    <select id="findMonthlyBudgets" resultMap="BaseResultMap">
+        SELECT * FROM budget
+        WHERE user_id = #{userId}
+          AND period = 'MONTHLY'
+          AND year = #{year}
+          AND month = #{month}
+        ORDER BY created_at DESC
+    </select>
+    
+    <select id="findWeeklyBudgets" resultMap="BaseResultMap">
+        SELECT * FROM budget
+        WHERE user_id = #{userId}
+          AND period = 'WEEKLY'
+        ORDER BY created_at DESC
+    </select>
+    
+    <select id="findByUserIdAndCategoryIdAndPeriod" resultMap="BaseResultMap">
+        SELECT * FROM budget
+        WHERE user_id = #{userId}
+          AND category_id = #{categoryId}
+          AND period = #{periodType}
+        <if test="year != null">
+            AND year = #{year}
+        </if>
+        <if test="month != null">
+            AND month = #{month}
+        </if>
+        LIMIT 1
+    </select>
+    
+    <insert id="insert" parameterType="com.atun.brain.infrastructure.persistence.mybatis.po.BudgetPO"
+        useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO budget (user_id, category_id, amount, period, year, month, created_at, updated_at)
+        VALUES (#{userId}, #{categoryId}, #{amount}, #{periodType}, #{year}, #{month}, NOW(), NOW())
+    </insert>
+    
+    <update id="update" parameterType="com.atun.brain.infrastructure.persistence.mybatis.po.BudgetPO">
+        UPDATE budget
+        SET amount = #{amount},
+            year = #{year},
+            month = #{month},
+            updated_at = NOW()
+        WHERE id = #{id}
+    </update>
+    
+    <delete id="deleteById">
+        DELETE FROM budget WHERE id = #{id}
+    </delete>
+</mapper>
