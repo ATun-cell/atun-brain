@@ -39,6 +39,10 @@
         WHERE user_id = #{userId} AND category_id = #{categoryId}
         ORDER BY transaction_date DESC, created_at DESC
     </select>
+    <select id="findByUserIdWithCategory"
+            resultType="com.atun.brain.infrastructure.persistence.mybatis.po.TransactionPO">
+        
+    </select>
     
     <insert id="insert" parameterType="com.atun.brain.infrastructure.persistence.mybatis.po.TransactionPO"
         useGeneratedKeys="true" keyProperty="id">
