@@ -1,3 +1,8 @@
+-- 创建数据库并设置字符集以支持中文
+CREATE DATABASE IF NOT EXISTS `atun-brain` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE `atun-brain`;
+SET NAMES utf8mb4;
+
 -- 用户表
 CREATE TABLE user (
                       id BIGINT PRIMARY KEY AUTO_INCREMENT,
