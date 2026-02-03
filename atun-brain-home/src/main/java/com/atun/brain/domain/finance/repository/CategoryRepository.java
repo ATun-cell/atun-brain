@@ -19,6 +19,8 @@ public interface CategoryRepository {
      */
     Category save(Category category);
     
+    
+    
     /**
      * 根据ID查找分类
      */

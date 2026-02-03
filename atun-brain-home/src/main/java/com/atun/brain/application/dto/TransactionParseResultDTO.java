@@ -7,12 +7,11 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * 交易 DTO（应用层）
- *
+ * 交易解析结果DTO（应用层）
+ * 
  * @author lij
  * @date 2026/02/03
  */
@@ -20,22 +19,13 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TransactionDTO {
-    
-    /** ID */
-    private Long id;
-    
-    /** 用户ID */
-    private Long userId;
-    
-    /** 消息ID */
-    private Long messageId;
+public class TransactionParseResultDTO {
     
     /** 金额 */
     private BigDecimal amount;
     
     /** 类型 */
-    private String type;  // EXPENSE | INCOME
+    private String type;  // INCOME | EXPENSE
     
     /** 分类ID */
     private Long categoryId;
@@ -43,21 +33,12 @@ public class TransactionDTO {
     /** 分类名称 */
     private String categoryName;
     
-    /** 分类信息 */
-    private CategoryDTO category;
-    
-    /** 交易日期 */
-    private LocalDate transactionDate;
-    
     /** 描述 */
     private String description;
     
     /** 标签 */
     private List<String> tags;
     
-    /** 创建时间 */
-    private LocalDateTime createdAt;
-    
-    /** 更新时间 */
-    private LocalDateTime updatedAt;
+    /** 交易日期 */
+    private LocalDate transactionDate;
 }
