@@ -17,6 +17,8 @@
         <java.version>21</java.version>
         <langchain4j.version>0.35.0</langchain4j.version>
         <qdrant.version>1.11.0</qdrant.version>
+        <protobuf.version>3.25.1</protobuf.version>
+        <guava.version>33.0.0-jre</guava.version>
         <mybatis.version>3.0.3</mybatis.version>
         <langchain4j.verison>1.10.0-beta18</langchain4j.verison>
         <springdoc-openapi.version>2.6.0</springdoc-openapi.version>
@@ -57,6 +59,21 @@
                 <artifactId>client</artifactId>
                 <version>${qdrant.version}</version>
             </dependency>
+            
+            <!-- Protocol Buffers -->
+            <dependency>
+                <groupId>com.google.protobuf</groupId>
+                <artifactId>protobuf-java</artifactId>
+                <version>${protobuf.version}</version>
+            </dependency>
+            
+            <!--guava-->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+            
             <!-- API Documentation -->
             <dependency>
                 <groupId>org.springdoc</groupId>
