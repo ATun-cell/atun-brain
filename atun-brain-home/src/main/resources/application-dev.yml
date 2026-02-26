@@ -11,32 +11,39 @@ spring:
 server:
   port: 8089
 
-# AI模型配置（开发环境）
-ai:
-  provider: dashscope  # 使用阿里云百炼
+# Agent 配置（开发环境）
+agent:
+  provider: dashscope
   
   dashscope:
-    api-key: sk-1e878fbcf3b748fba0ca9a9fcf674309
+    api-key: ${DASHSCOPE_API_KEY:sk-your-dashscope-api-key}
     base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
     models:
       default: qwen-plus
       chat: qwen-turbo
       analysis: qwen-plus
       report: qwen-max
+      parsing: qwen-plus
       embedding: text-embedding-v2
     temperature: 0.7
     max-tokens: 2000
     timeout: 30
 
   openai:
-    api-key: sk-1e878fbcf3b748fba0ca9a9fcf674309
+    api-key: ${OPENAI_API_KEY:sk-your-openai-api-key}
     base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
 
-# Qdrant配置（开发环境）
-qdrant:
-  host: 101.35.119.204
-  port: 6334
-  collection-name: transactions
+  memory:
+    enabled: true
+    store: jdbc
+
+  rag:
+    enabled: true
+    store: qdrant
+    qdrant:
+      host: 101.35.119.204
+      port: 6334
+      collection-name: agent_knowledge
 
 # 日志配置
 logging:

@@ -30,13 +30,13 @@ server:
   servlet:
     context-path: /api
 
-# Qdrant配置
-qdrant:
-  host: ${QDRANT_HOST:localhost}
-  port: ${QDRANT_PORT:6334}
-  use-tls: false
-  collection-name: ${QDRANT_COLLECTION:transactions}
-  vector-size: 1536
+# Qdrant配置（已迁移到 agent.rag.qdrant）
+# qdrant:
+#   host: ${QDRANT_HOST:localhost}
+#   port: ${QDRANT_PORT:6334}
+#   use-tls: false
+#   collection-name: ${QDRANT_COLLECTION:transactions}
+#   vector-size: 1536
 
 # Swagger配置
 springdoc:
@@ -53,12 +53,12 @@ logging:
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
 
-# AI模型配置（支持阿里云百炼平台、OpenAI）
-ai:
+# Agent 统一配置（替代旧的 ai.* 和 qdrant.* 配置）
+agent:
   # 服务提供商选择：dashscope(阿里云百炼) | openai
   provider: ${AI_PROVIDER:dashscope}
 
-  # 阿里云百炼配置（兼容OpenAI接口）
+  # 阿里云百炼配置（兼容 OpenAI 接口）
   dashscope:
     api-key: ${DASHSCOPE_API_KEY:sk-your-dashscope-api-key}
     base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
@@ -67,6 +67,7 @@ ai:
       chat: qwen-turbo          # 对话模型（快速响应）
       analysis: qwen-plus       # 分析模型（平衡性能）
       report: qwen-max          # 报告生成（高质量）
+      parsing: qwen-plus        # 交易解析（结构化输出）
       embedding: text-embedding-v2  # 向量化模型
     temperature: 0.7
     max-tokens: 2000
@@ -81,6 +82,7 @@ ai:
       chat: gpt-4o-mini
       analysis: gpt-4o
       report: gpt-4o
+      parsing: gpt-4o
       embedding: text-embedding-3-small
     temperature: 0.7
     max-tokens: 2000
@@ -91,7 +93,25 @@ ai:
     max-attempts: 3
     backoff-ms: 1000
 
-  # Prompt配置
-  prompts:
-    system-role: 你是一个专业的AI财务助手，帮助用户管理个人财务、记账和分析消费习惯。请用清晰、准确的语言回答用户问题，并在处理财务数据时保持客观和专业。
-    enable-function-call: true
+  # 记忆配置
+  memory:
+    enabled: true
+    strategy: message         # message | token
+    max-messages: 20
+    store: jdbc               # jdbc | redis | in-memory
+
+  # RAG 配置
+  rag:
+    enabled: true
+    store: qdrant
+    qdrant:
+      host: ${QDRANT_HOST:localhost}
+      port: ${QDRANT_PORT:6334}
+      use-tls: false
+      collection-name: ${QDRANT_COLLECTION:agent_knowledge}
+      vector-size: 1536
+
+  # 工具配置
+  tools:
+    enabled: true
+    enabled-groups: []         # 空=全部启用
