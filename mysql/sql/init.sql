@@ -117,3 +117,32 @@ INSERT INTO t_finance_transaction (user_id, amount, type, category_id, transacti
 (1, 4.00, 'EXPENSE', 2, '2026-02-01 08:30:00', '地铁通勤', NOW(), NOW()),
 (1, 3500.00, 'EXPENSE', 4, '2026-02-01 10:00:00', '2 月房租', NOW(), NOW()),
 (1, 100.00, 'EXPENSE', 1, '2026-02-02 17:00:00', '买菜水果', NOW(), NOW());
+
+-- ====================================
+-- Agent 记忆表结构（对话历史存储）
+-- ====================================
+
+-- 会话记忆存储表
+CREATE TABLE IF NOT EXISTS chat_memory (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '主键 ID',
+    memory_id VARCHAR(255) NOT NULL UNIQUE COMMENT '记忆 ID（会话 ID）',
+    messages_json LONGTEXT NOT NULL COMMENT '对话消息 JSON 数组',
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    INDEX idx_memory_id (memory_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='会话记忆存储表';
+
+-- 记忆持久化死信队列表
+CREATE TABLE IF NOT EXISTS dlq_memory_events (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '主键 ID',
+    memory_id VARCHAR(255) NOT NULL COMMENT '记忆 ID',
+    user_id BIGINT NOT NULL COMMENT '用户 ID',
+    user_message TEXT COMMENT '用户消息',
+    assistant_message TEXT COMMENT '助手消息',
+    error_message VARCHAR(500) COMMENT '错误信息',
+    retry_count INT DEFAULT 0 COMMENT '重试次数',
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    processed_at DATETIME NULL COMMENT '处理时间',
+    INDEX idx_user_id (user_id),
+    INDEX idx_created_at (created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='记忆持久化死信队列表';
