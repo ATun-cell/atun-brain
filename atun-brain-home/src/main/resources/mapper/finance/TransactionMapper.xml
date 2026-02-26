@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atun.brain.home.infrastructure.persistence.mapper.TransactionMapper">
+
+    <!-- 结果映射 -->
+    <resultMap id="BaseResultMap" type="com.atun.brain.home.infrastructure.persistence.po.TransactionPO">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="type" property="type"/>
+        <result column="amount" property="amount"/>
+        <result column="category_id" property="categoryId"/>
+        <result column="description" property="description"/>
+        <result column="transaction_time" property="transactionTime"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
+        <result column="deleted" property="deleted"/>
+    </resultMap>
+
+    <!-- 基础列 -->
+    <sql id="Base_Column_List">
+        id, user_id, type, amount, category_id, description, transaction_time, created_at, updated_at, deleted
+    </sql>
+
+    <!-- 插入交易 -->
+    <insert id="insert" parameterType="com.atun.brain.home.infrastructure.persistence.po.TransactionPO"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO t_finance_transaction (
+            user_id, type, amount, category_id, description, transaction_time, created_at, updated_at, deleted
+        ) VALUES (
+            #{userId}, #{type}, #{amount}, #{categoryId}, #{description}, #{transactionTime}, #{createdAt}, #{updatedAt}, #{deleted}
+        )
+    </insert>
+
+    <!-- 根据 ID 查询 -->
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_finance_transaction
+        WHERE id = #{id} AND deleted = 0
+    </select>
+
+    <!-- 根据用户 ID 查询 -->
+    <select id="selectByUserId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_finance_transaction
+        WHERE user_id = #{userId} AND deleted = 0
+        ORDER BY transaction_time DESC
+    </select>
+
+    <!-- 根据时间范围查询 -->
+    <select id="selectByUserIdAndTimeRange" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_finance_transaction
+        WHERE user_id = #{userId}
+          AND deleted = 0
+          AND transaction_time &gt;= #{startTime}
+          AND transaction_time &lt;= #{endTime}
+        ORDER BY transaction_time DESC
+    </select>
+
+    <!-- 根据分类 ID 查询 -->
+    <select id="selectByUserIdAndCategoryId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_finance_transaction
+        WHERE user_id = #{userId} AND category_id = #{categoryId} AND deleted = 0
+        ORDER BY transaction_time DESC
+    </select>
+
+    <!-- 更新交易 -->
+    <update id="update" parameterType="com.atun.brain.home.infrastructure.persistence.po.TransactionPO">
+        UPDATE t_finance_transaction
+        <set>
+            <if test="type != null">type = #{type},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="categoryId != null">category_id = #{categoryId},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="transactionTime != null">transaction_time = #{transactionTime},</if>
+            <if test="updatedAt != null">updated_at = #{updatedAt},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!-- 逻辑删除 -->
+    <update id="deleteLogic">
+        UPDATE t_finance_transaction
+        SET deleted = 1, updated_at = NOW()
+        WHERE id = #{id}
+    </update>
+
+</mapper>

@@ -61,6 +61,21 @@
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
         </dependency>
 
+        <!-- ============ atun-brain-component 框架依赖 ============ -->
+        <!-- Agent Tools SPI -->
+        <dependency>
+            <groupId>com.atun.brain</groupId>
+            <artifactId>agent-tools-spi</artifactId>
+        </dependency>
+        <!-- LangChain4j -->
+        <dependency>
+            <groupId>dev.langchain4j</groupId>
+            <artifactId>langchain4j-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>dev.langchain4j</groupId>
+            <artifactId>langchain4j</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

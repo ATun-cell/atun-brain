@@ -11,9 +11,8 @@ import org.springframework.scheduling.annotation.EnableAsync;
  *
  */
 @SpringBootApplication
-@MapperScan("com.atun.brain.infrastructure.persistence.mybatis.mapper")
 @EnableAsync
-public class App 
+public class App
 {
     public static void main( String[] args ) {
         SpringApplication app = new SpringApplication(App.class);

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atun.brain.home.infrastructure.persistence.mapper.CategoryMapper">
+
+    <!-- 结果映射 -->
+    <resultMap id="BaseResultMap" type="com.atun.brain.home.infrastructure.persistence.po.CategoryPO">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="type" property="type"/>
+        <result column="name" property="name"/>
+        <result column="icon" property="icon"/>
+        <result column="sort_order" property="sortOrder"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
+        <result column="deleted" property="deleted"/>
+    </resultMap>
+
+    <!-- 基础列 -->
+    <sql id="Base_Column_List">
+        id, user_id, type, name, icon, sort_order, created_at, updated_at, deleted
+    </sql>
+
+    <!-- 插入分类 -->
+    <insert id="insert" parameterType="com.atun.brain.home.infrastructure.persistence.po.CategoryPO"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO t_finance_category (
+            user_id, type, name, icon, sort_order, created_at, updated_at, deleted
+        ) VALUES (
+            #{userId}, #{type}, #{name}, #{icon}, #{sortOrder}, #{createdAt}, #{updatedAt}, #{deleted}
+        )
+    </insert>
+
+    <!-- 根据 ID 查询 -->
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_finance_category
+        WHERE id = #{id} AND deleted = 0
+    </select>
+
+    <!-- 根据用户 ID 和类型查询 -->
+    <select id="selectByUserIdAndType" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_finance_category
+        WHERE user_id = #{userId} AND type = #{type} AND deleted = 0
+        ORDER BY sort_order ASC
+    </select>
+
+    <!-- 根据用户 ID 查询 -->
+    <select id="selectByUserId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_finance_category
+        WHERE user_id = #{userId} AND deleted = 0
+        ORDER BY type, sort_order ASC
+    </select>
+
+    <!-- 更新分类 -->
+    <update id="update" parameterType="com.atun.brain.home.infrastructure.persistence.po.CategoryPO">
+        UPDATE t_finance_category
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="icon != null">icon = #{icon},</if>
+            <if test="sortOrder != null">sort_order = #{sortOrder},</if>
+            <if test="updatedAt != null">updated_at = #{updatedAt},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!-- 逻辑删除 -->
+    <update id="deleteLogic">
+        UPDATE t_finance_category
+        SET deleted = 1, updated_at = NOW()
+        WHERE id = #{id}
+    </update>
+
+</mapper>

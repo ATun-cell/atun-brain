@@ -12,7 +12,6 @@
         
         <!-- 业务应用 -->
         <module>atun-brain-home</module>
-        <module>agent-tools-impl</module>
     </modules>
     
     <properties>
