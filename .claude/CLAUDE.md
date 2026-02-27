@@ -64,7 +64,7 @@ atun-brain/
 - `SERVER_PORT`
 
 ### External Dependencies
-
+atun-brain-componen的本机地址C:\dev\workspace\atun-brain-component你可以直接访问
 `atun-brain-component` (version 1.0-SNAPSHOT) 提供:
 - `agent-tools-spi` - ToolProvider 接口
 - `agent-memory-spi` / `agent-memory-jdbc` - 记忆持久化
