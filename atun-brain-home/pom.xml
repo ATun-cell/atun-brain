@@ -67,6 +67,16 @@
             <groupId>com.atun.brain</groupId>
             <artifactId>agent-tools-spi</artifactId>
         </dependency>
+        <!-- Agent Memory SPI -->
+        <dependency>
+            <groupId>com.atun.brain</groupId>
+            <artifactId>agent-memory-spi</artifactId>
+        </dependency>
+        <!-- Agent RAG SPI -->
+        <dependency>
+            <groupId>com.atun.brain</groupId>
+            <artifactId>agent-rag-spi</artifactId>
+        </dependency>
         <!-- Agent Core - 主编排器 -->
         <dependency>
             <groupId>com.atun.brain</groupId>
@@ -77,11 +87,6 @@
             <groupId>com.atun.brain</groupId>
             <artifactId>agent-config-spring-boot-starter</artifactId>
         </dependency>
-        <!-- Agent Memory JDBC - 记忆持久化 -->
-        <dependency>
-            <groupId>com.atun.brain</groupId>
-            <artifactId>agent-memory-jdbc</artifactId>
-        </dependency>
         <!-- LangChain4j -->
         <dependency>
             <groupId>dev.langchain4j</groupId>
@@ -90,6 +95,24 @@
         <dependency>
             <groupId>dev.langchain4j</groupId>
             <artifactId>langchain4j</artifactId>
+        </dependency>
+
+        <!-- Qdrant Vector Database -->
+        <dependency>
+            <groupId>io.qdrant</groupId>
+            <artifactId>client</artifactId>
+        </dependency>
+
+        <!-- Jakarta Annotation API (for @PostConstruct) -->
+        <dependency>
+            <groupId>jakarta.annotation</groupId>
+            <artifactId>jakarta.annotation-api</artifactId>
+        </dependency>
+
+        <!-- Protocol Buffers -->
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
         </dependency>
     </dependencies>
     <build>

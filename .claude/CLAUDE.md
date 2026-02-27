@@ -3,7 +3,7 @@
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Build & Run
-
+- 项目基于java21，本地的java21版本的地址是C:\dev\tools\jdks\jdk-21不要去查询本地环境变量中的java版本。
 ```bash
 # Build all modules
 mvn clean install -Drevision=1.0-SNAPSHOT -DskipTests

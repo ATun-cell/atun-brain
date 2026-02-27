@@ -123,9 +123,9 @@ INSERT INTO t_finance_transaction (user_id, amount, type, category_id, transacti
 -- ====================================
 
 -- 会话记忆存储表
-CREATE TABLE IF NOT EXISTS chat_memory (
+CREATE TABLE IF NOT EXISTS t_chat_memory (
     id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '主键 ID',
-    memory_id VARCHAR(255) NOT NULL UNIQUE COMMENT '记忆 ID（会话 ID）',
+    memory_id VARCHAR(255) NOT NULL UNIQUE COMMENT '记忆 ID（userId:sessionId）',
     messages_json LONGTEXT NOT NULL COMMENT '对话消息 JSON 数组',
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',

@@ -2,7 +2,12 @@
   "permissions": {
     "allow": [
       "Bash(mvn clean:*)",
-      "Bash(java:*)"
+      "Bash(java:*)",
+      "Bash(echo:*)",
+      "Bash(JAVA_HOME=\"C:/dev/tools/jdks/jdk-21\" PATH=\"$JAVA_HOME/bin:$PATH\" mvn clean:*)",
+      "Bash(JAVA_HOME=\"C:/dev/tools/jdks/jdk-21\" M2_HOME=\"C:/dev/tools/uf_devOps/apache-maven-3.9.10-bin\" PATH=\"C:/dev/tools/jdks/jdk-21/bin:C:/dev/tools/uf_devOps/apache-maven-3.9.10-bin/bin:$PATH\" mvn clean:*)",
+      "Bash(export:*)",
+      "Bash(git add:*)"
     ]
   }
 }

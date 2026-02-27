@@ -93,13 +93,6 @@ agent:
     max-attempts: 3
     backoff-ms: 1000
 
-  # 记忆配置
-  memory:
-    enabled: true
-    strategy: message         # message | token
-    max-messages: 20
-    store: jdbc               # jdbc | redis | in-memory
-
   # RAG 配置
   rag:
     enabled: true
@@ -107,9 +100,18 @@ agent:
     qdrant:
       host: ${QDRANT_HOST:localhost}
       port: ${QDRANT_PORT:6334}
-      use-tls: false
-      collection-name: ${QDRANT_COLLECTION:agent_knowledge}
-      vector-size: 1536
+      collection: ${QDRANT_COLLECTION:atun-brain}
+    embedding:
+      dimension: ${EMBEDDING_DIMENSION:1536}
+
+  # 记忆配置
+  memory:
+    enabled: true
+    store: jdbc               # jdbc | redis | in-memory
+    window:
+      strategy: MESSAGE       # MESSAGE | TOKEN
+      max-messages: 100
+      max-tokens: 2000
 
   # 工具配置
   tools:

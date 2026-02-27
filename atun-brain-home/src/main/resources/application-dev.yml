@@ -14,7 +14,7 @@ server:
 # Agent 配置（开发环境）
 agent:
   provider: dashscope
-  
+
   dashscope:
     api-key: ${DASHSCOPE_API_KEY:sk-your-dashscope-api-key}
     base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
@@ -36,6 +36,10 @@ agent:
   memory:
     enabled: true
     store: jdbc
+    window:
+      strategy: MESSAGE
+      max-messages: 100
+      max-tokens: 2000
 
   rag:
     enabled: true
@@ -43,7 +47,9 @@ agent:
     qdrant:
       host: 101.35.119.204
       port: 6334
-      collection-name: agent_knowledge
+      collection: agent_knowledge
+    embedding:
+      dimension: 1536
 
 # 日志配置
 logging:

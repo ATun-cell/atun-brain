@@ -26,7 +26,7 @@ public class AgentController {
      * 对话请求
      */
     @Data
-    public static class ChatRequest {
+    public static class  ChatRequest {
         /**
          * 用户 ID（必填）
          */
